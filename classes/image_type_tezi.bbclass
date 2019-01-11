@@ -169,7 +169,12 @@ python rootfs_tezi_json() {
     # patched in IMAGE_CMD_teziimg() below
     release_date = "%release_date%"
 
-    data = OrderedDict({ "config_format": 2, "autoinstall": False })
+    try:
+        autoinstall = oe.types.boolean(d.getVar('TEZI_AUTOINSTALL', True))
+    except:
+        autoinstall = False
+    #data = OrderedDict({ "config_format": 2, "autoinstall": oe.types.boolean(d.getVar('TEZI_AUTOINSTALL', True)) })
+    data = OrderedDict({ "config_format": 2, "autoinstall": autoinstall })
 
     # Use image recipes SUMMARY/DESCRIPTION/PV...
     data["name"] = d.getVar('SUMMARY', True)
