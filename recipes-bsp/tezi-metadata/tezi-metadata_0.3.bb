@@ -5,6 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 SRC_URI = " \
     file://prepare.sh \
     file://wrapup.sh \
+    file://wrapup-reboot.sh \
     file://toradexlinux.png \
     file://marketing.tar;unpack=false \
 "
@@ -13,7 +14,11 @@ inherit deploy
 
 do_deploy () {
     install -m 644 ${WORKDIR}/prepare.sh ${DEPLOYDIR}
-    install -m 644 ${WORKDIR}/wrapup.sh ${DEPLOYDIR}
+    if [ "${TEZI_AUTOREBOOT}" -eq 1 ]; then
+        install -m 644 ${WORKDIR}/wrapup-reboot.sh ${DEPLOYDIR}/wrapup.sh
+    else
+        install -m 644 ${WORKDIR}/wrapup.sh ${DEPLOYDIR}
+    fi
     install -m 644 ${WORKDIR}/toradexlinux.png ${DEPLOYDIR}
     install -m 644 ${WORKDIR}/marketing.tar ${DEPLOYDIR}
 }
